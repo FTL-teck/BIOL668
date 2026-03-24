@@ -105,7 +105,7 @@ class Seq:
 
     def make_kmers(self, k=3):
         self.kmers=[]
-        for i in range(0, len(self.sequence-3)):
+        for i in range(0, len(self.sequence)-3):
             self.kmers.append(self.sequence[i:i+3])
 
     def fasta(self):
@@ -123,7 +123,7 @@ class DNA(Seq):
         return gc
 
     def print_info(self):
-        print(self.species + " " + self.gene + self.geneid +s ": " + self.sequence)
+        print(self.species + " " + self.gene + self.geneid + ": " + self.sequence)
 
     def reverse_complement(self):
         reverse = self.sequence[::-1]
