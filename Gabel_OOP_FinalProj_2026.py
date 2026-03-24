@@ -91,7 +91,7 @@ aa_mol_weights={'A':89.09,'C':121.15,'D':133.1,'E':147.13,'F':165.19,
 
 class Seq:
 
-    def __init__(self,sequence,gene,species):
+    def __init__(self, sequence, gene, species):
         self.sequence = sequence.strip().upper()
         self.gene = gene
         self.species = species
@@ -113,7 +113,7 @@ class Seq:
     
 class DNA(Seq):
 
-    def __init__(self,sequence,gene,species,geneid,**kwargs):
+    def __init__(self, sequence, gene, species, geneid, **kwargs):
         super().__init__(sequence,gene,species)
         self.sequence = re.sub('[^ATGCU]','N',sequence)
         self.geneid = geneid
@@ -162,7 +162,7 @@ class DNA(Seq):
 
 class RNA(DNA):
 
-    def __init__(self,sequence,gene,species,geneid,**kwargs):
+    def __init__(self, sequence, gene, species, geneid, **kwargs):
         super().__init__(sequence, gene, species, geneid)
         self.sequence = re.sub('T', 'U', sequence)
         self.codons = []
@@ -182,11 +182,21 @@ class RNA(DNA):
 
 class Protein(Seq):
 
-    def __init__:
+    def __init__(self, sequence, gene, species, **kwargs):
+        super().__init__(sequence, gene, species)
+        self.sequence = re.sub('[^A-Z]', 'X', self.sequence)
 
     def total_hydro(self):
+        hydro = 0
+        for aa in self.sequence:
+            hydro += kyte_doolittle[aa]
+        return hydro
 
     def mol_weight(self):
+        weight = 0
+        for aa in self.sequence:
+            weight += aa_mol_weights[aa]
+        return weight
 
     
 
