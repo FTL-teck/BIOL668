@@ -115,18 +115,49 @@ class DNA(Seq):
 
     def __init__(self,sequence,gene,species,geneid,**kwargs):
         super().__init__(sequence,gene,species)
-        self.sequence=sequence
-        self.geneid=geneid
+        self.sequence = re.sub('[^ATGCU]','N',sequence)
+        self.geneid = geneid
  
     def analysis(self):
-        gc=len(re.findall('G',self.sequence) + re.findall('C',self.sequence))
+        gc = len(re.findall('G',self.sequence) + re.findall('C',self.sequence))
         return gc
 
-#    def print_info(self):
+    def print_info(self):
+        print(self.species + " " + self.gene + self.geneid +s ": " + self.sequence)
 
-#    def reverse_complement(self):
+    def reverse_complement(self):
+        reverse = self.sequence[::-1]
+        complement = ""
+        for base in reverse:
+            if base == 'A':
+                complement += 'T'
+            elif base == 'C':
+                complement += 'G'
+            elif base == 'G':
+                complement += 'C'
+            elif base == 'T':
+                complement += 'A'
+            else:
+                complement += 'N'
+        return complement
 
-#    def six_frames(self):
+    #returns 6 lists, indexes 0,1,2 are forward; 3,4,5 are reverse
+    def six_frames(self):
+        frames = [[] for i in range(6)]
+
+        #forward
+        frames[0] = [self.sequence[i:i+3] for i in range(0, len(self.sequence, 3))]
+        frames[1] = [self.sequence[i:i+3] for i in range(1, len(self.sequence, 3))]
+        frames[2] = [self.sequence[i:i+3] for i in range(2, len(self.sequence, 3))]
+
+        #reverse
+        reverse = self.reverse_complement()
+        frames[3] = [reverse[i:i+3] for i in range(0, len(reverse, 3))]
+        frames[4] = [reverse[i:i+3] for i in range(1, len(reverse, 3))]
+        frames[5] = [reverse[i:i+3] for i in range(2, len(reverse, 3))]
+
+        return frames
+
 
 """
 class RNA(DNA):
