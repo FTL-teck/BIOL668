@@ -63,6 +63,12 @@
 #      sequence assigned to the protein object. 
 
 
+
+# Methods added by Francis:
+# 1. Override on len() to return length of the sequence attribute of Seq class
+# 2. A charge() method to find the total charge of a protein based on AA charges at physiological pH
+
+
 import re
 
 standard_code = {
@@ -141,6 +147,10 @@ class Seq:
 
     def __ne__(self, other):
         return not self == other
+    
+    # FL: Override len to return length of the sequence not the class
+    def __len__(self):
+        return len(self.sequence)
     
 class DNA(Seq):
 
@@ -228,6 +238,15 @@ class Protein(Seq):
         for aa in self.sequence:
             weight += aa_mol_weights[aa]
         return weight
+    
+    # FL: estimate total charge of the protein by subtracting all - charges (acid) from all + charges (base)
+    # based on amino acid charge at physiological pH
+    def charge(self):
+        base = len(re.findall('[RHL]', self.sequence))
+        acid = len(re.findall('[DE]', self.sequence))
+        total_charge = base-acid
+        return total_charge
+
 
 
 
