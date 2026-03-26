@@ -122,10 +122,9 @@ class Seq:
             
             counts = {kmer: 0 for kmer in self.kmers}
             for kmer in counts.keys():
-                count = 0
                 for i in range(0, len(self.sequence)):
                     if kmer == self.sequence[i:i+len(kmer)]:
-                        count += 1
+                        counts[kmer] += 1
             return counts
 
         else:
@@ -230,3 +229,18 @@ class Protein(Seq):
             weight += aa_mol_weights[aa]
         return weight
 
+
+
+#Testing section
+if __name__ == "__main__":
+    seq1 = Seq("ACGTACGT", "gene", "species")
+    seq2 = Seq("ACGTACGT", "x", "y")
+
+    print(seq1 == seq2)
+    print(seq1 != seq2)
+
+    seq1.make_kmers()
+    x = seq1.kmerCount()
+    print(x)
+
+    print(seq1.kmerCount("ACGT"))
